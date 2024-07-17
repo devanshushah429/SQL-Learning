@@ -1,6 +1,3 @@
---Things to learn
--- WITHIN GROUP
-
 -- Delete duplicate records
 Delete p1 from person p1, person p2
 where p1.email = p2.email and p1.id > p2.id
@@ -74,3 +71,9 @@ SELECT
 FROM Products p 
 inner join CTE
 on CTE.product_id = p.product_id
+
+
+
+--Find valid emails
+SELECT user_id, name, mail FROM Users
+WHERE mail LIKE '[a-zA-Z]%@leetcode.com' AND LEFT(mail, LEN(mail) - 13) NOT LIKE '%[^0-9a-zA-Z_.-]%'

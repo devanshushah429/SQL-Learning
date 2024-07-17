@@ -100,3 +100,80 @@ from cte1
 full outer join cte2
 on cte1.requester_id = cte2.accepter_id
 order by num desc
+
+--  Patients With a Condition
+SELECT
+    patient_id
+    ,patient_name
+    ,conditions
+FROM Patients
+WHERE
+    conditions LIKE 'DIAB1%'
+    or conditions LIKE '% DIAB1%'
+
+-- Investments in 2016
+WITH CTE1 AS (
+    SELECT tiv_2015
+    FROM Insurance
+    GROUP BY tiv_2015
+    HAVING COUNT(*) > 1
+),
+CTE2 AS (
+    SELECT lat, lon
+    FROM Insurance
+    GROUP BY lat, lon
+    HAVING COUNT(*) = 1
+)
+SELECT ROUND(SUM(i.tiv_2016), 2) AS tiv_2016
+FROM Insurance i
+INNER JOIN CTE1 s ON i.tiv_2015 = s.tiv_2015
+INNER JOIN CTE2 u ON i.lat = u.lat AND i.lon = u.lon;
+
+-- Department Top Three Salaries
+With CTE1 AS(
+    SELECT
+        departmentId, Salary
+    FROM Employee
+    GROUP BY departmentId, salary
+)
+,CTE2 AS 
+(
+    Select 
+        departmentId, 
+        Salary, 
+        Row_Number() OVER(Partition By departmentId order by Salary desc) as rn
+    from CTE1
+)
+
+Select
+    d.name as Department,
+    e.name as Employee,
+    e.Salary
+
+from Employee e
+
+INNER JOIN CTE2
+on  e.departmentId = CTE2.departmentId
+and e.salary = CTE2.salary
+
+INNER JOIN department d
+on d.id = CTE2.departmentId
+
+where CTE2.rn <= 3
+
+-- Fix Names in a Table
+Select 
+    user_id
+    ,(UPPER(SUBSTRING(name, 1, 1)) + LOWER(SUBSTRING(name,2, LEN(name)-1))) as 'name'
+from Users
+ORDER BY user_id
+
+-- Patients With a Condition
+SELECT
+    patient_id
+    ,patient_name
+    ,conditions
+FROM Patients
+WHERE
+    conditions LIKE 'DIAB1%'
+    or conditions LIKE '% DIAB1%'
