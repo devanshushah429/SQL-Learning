@@ -1,0 +1,15 @@
+Begin TRY
+	INSERT INTO Employee VALUES(10,'6',1)
+End TRY
+BEGIN CATCH
+	PRINT('Error Message ' + ERROR_MESSAGE());
+	PRINT('Error Number ' + CAST(ERROR_NUMBER() AS VARCHAR));
+	PRINT('Error Severity ' + CAST(ERROR_SEVERITY() AS VARCHAR));
+	PRINT('Error State ' + CAST(Error_STATE() AS VARCHAR));
+	PRINT('Error Line ' + CAST(ERROR_LINE() AS VARCHAR));
+	PRINT('Error Procedure ' + ERROR_PROCEDURE());
+END CATCH
+SELECT * from Employees
+
+SELECT 1 
+WHERE 'JOHN' COLLATE LATIN1_GENERAL_CS_AI = 'john'

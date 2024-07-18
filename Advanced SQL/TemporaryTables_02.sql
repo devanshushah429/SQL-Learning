@@ -1,0 +1,1 @@
+Select * from ##temp_table
