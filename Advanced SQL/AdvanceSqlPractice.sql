@@ -48,6 +48,20 @@ on d.id = CTE2.departmentId
 where CTE2.rn <= 3
 
 --Human Traffic of Stadium
+With CTE1 as
+(
+    SELECT * 
+    FROM Stadium where people >= 100
+)
+Select * 
+from Stadium 
+WHERE id IN (SELECT id FROM CTE1)
+and (
+(id+1 in (SELECT id from CTE1) and id+2 in (SELECT id from CTE1))
+or (id-1 in (SELECT id from CTE1) and id-2 in (SELECT id from CTE1))
+or (id-1 in (SELECT id from CTE1) and id+1 in (SELECT id from CTE1))
+)
+-- or
 SELECT DISTINCT 
 S.id, S.visit_date, S.people
 FROM Stadium AS S
